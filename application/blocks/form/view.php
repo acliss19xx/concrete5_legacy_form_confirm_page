@@ -3,7 +3,6 @@
  * DESIGNERS: SCROLL DOWN! (IGNORE ALL THIS STUFF AT THE TOP)
  ************************************************************/
 defined('C5_EXECUTE') or die("Access Denied.");
-use \Concrete\Block\Form\MiniSurvey;
 
 $survey = $controller;
 $miniSurvey = new \Application\Block\Form\MiniSurvey($b);
@@ -18,6 +17,7 @@ if($form_mode == 'confirm'){
 }
 $questionsRS = $miniSurvey->loadQuestions($qsID, $bID);
 $questions = [];
+$isAddress = false;
 while ($questionRow = $questionsRS->fetchRow()) {
     $question = $questionRow;
     if($form_mode == 'confirm'){
@@ -30,6 +30,8 @@ while ($questionRow = $questionsRS->fetchRow()) {
         $question['type'] = 'textarea';
     } elseif ($questionRow['inputType'] == 'field') {
         $question['type'] = 'text';
+    } elseif ($questionRow['inputType'] == 'address') {
+        $isAddress = true;
     } else {
         $question['type'] = $questionRow['inputType'];
     }
@@ -43,6 +45,10 @@ while ($questionRow = $questionsRS->fetchRow()) {
 
     $questions[] = $question;
 }
+
+if($isAddress) { ?>
+    <script src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
+<?php } 
 
 //Prep thank-you message
 $success = (\Request::request('surveySuccess') && \Request::request('qsid') == intval($qsID));

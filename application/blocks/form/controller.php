@@ -101,6 +101,10 @@ class Controller extends \Concrete\Block\Form\Controller
                         if (!$answerFound) {
                             $notCompleted = 1;
                         }
+                    } elseif ($row['inputType'] == 'address') {
+                        if(strlen($_POST['Question' . $row['msqID'] . '_post']) == 0 || strlen($_POST['Question' . $row['msqID'] . '_addr']) == 0 ){
+                            $notCompleted = 1;
+                        }
                     } elseif ($row['inputType'] == 'fileupload') {
                         if (!isset($_FILES['Question' . $row['msqID']]) || !is_uploaded_file($_FILES['Question' . $row['msqID']]['tmp_name'])) {
                             $notCompleted = 1;
@@ -236,6 +240,9 @@ class Controller extends \Concrete\Block\Form\Controller
                     } elseif ($row['inputType'] == 'telephone') {
                         $answerLong = '';
                         $answer = $txt->sanitize($_POST['Question' . $row['msqID']]);
+                    } elseif ($row['inputType'] == 'address') {
+                        $answerLong = '';
+                        $answer = $_POST['Question' . $row['msqID'] . '_post'] . " " . $_POST['Question' . $row['msqID'] . '_addr'];
                     } else {
                         $answerLong = '';
                         $answer = $txt->sanitize($_POST['Question' . $row['msqID']]);
@@ -419,6 +426,10 @@ class Controller extends \Concrete\Block\Form\Controller
                     }
                 } elseif ($row['inputType'] == 'fileupload') {
                     if (!isset($_FILES['Question' . $row['msqID']]) || !is_uploaded_file($_FILES['Question' . $row['msqID']]['tmp_name'])) {
+                        $notCompleted = 1;
+                    }
+                } elseif ($row['inputType'] == 'address') {
+                    if(strlen($_POST['Question' . $row['msqID'] . '_post']) == 0 || strlen($_POST['Question' . $row['msqID'] . '_addr']) == 0 ){
                         $notCompleted = 1;
                     }
                 } elseif (!strlen(trim($_POST['Question' . $row['msqID']]))) {
