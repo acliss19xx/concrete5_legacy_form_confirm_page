@@ -107,8 +107,7 @@ $captcha = $surveyBlockInfo['displayCaptcha'] ? Loader::helper('validation/captc
 		<?php  endforeach; ?>
 
 	</div><!-- .fields -->
-
-	<?php  if ($captcha): ?>
+	<?php  if ($captcha && $form_mode != 'confirm'): ?>
 		<div class="form-group captcha">
 			<?php
             $captchaLabel = $captcha->label();
