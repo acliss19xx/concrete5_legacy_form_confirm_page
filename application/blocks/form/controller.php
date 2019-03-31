@@ -64,7 +64,7 @@ class Controller extends \Concrete\Block\Form\Controller
             $errorDetails = [];
 
             // check captcha if activated
-            if ($this->displayCaptcha) {
+            if ($this->displayCaptcha && $this->post('form_mode') != 'confirm') {
                 $captcha = Core::make('helper/validation/captcha');
                 if (!$captcha->check()) {
                     $errors['captcha'] = t('Incorrect captcha code');
